@@ -1,0 +1,163 @@
+<div class="row">
+    <div class="col"></div>
+    <div class="col-md-4 py-2 float-right ">
+        <div class="text-right">
+            <a mat-button routerLink="/">Home</a>
+            <span>>></span>
+            <a mat-button routerLink="/user/lists">User Lists</a>
+            <span>>></span>
+            <a mat-button routerLink="/user/create">Create</a>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <span class="text-center">
+            <h3 class="font-weight-bold">Create User</h3>
+        </span>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="getForm" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-md-4" class="m-auto">
+                    <div style="height: 150px; width: 150px; display: block;">
+                        <div class="circle-profile">
+                            <!-- User Profile Image -->
+                            <!-- <img class="profile-pic" src="http://cdn.cutestpaw.com/wp-content/uploads/2012/07/l-Wittle-puppy-yawning.jpg"> -->
+                            <img [src]="croppedImageProfile">
+                            <!-- Default Image -->
+                            <!-- <i class="fa fa-user fa-5x"></i> -->
+                        </div>
+                        <div class="p-image">
+                            <input class="file-upload" (change)="fileChangeEvent($event)" type="file" accept="image/*" />
+                            <i class="fa fa-camera upload-button"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-md-4">
+                    <!-- <input #profile type="hidden" formControlName="profile" value="{{croppedImageProfile}}"> -->
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>User Name</mat-label>
+                            <input #username class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.invalid }" matInput placeholder="username">
+
+                            <mat-hint>Hint</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Position</mat-label>
+                            <mat-select #position class="form-control border-0" formControlName="position" [ngClass]="{ 'is-invalid': submitted && f.position.invalid }" matInput placeholder="position">
+                                <mat-option value="admin">Admin</mat-option>
+                                <mat-option value="sale">Sale</mat-option>
+                            </mat-select>
+
+                            <mat-hint>Hint</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="pat@example.com" #email class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.invalid }">
+                            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Password</mat-label>
+                            <input #password formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.invalid}" matInput [type]="hide ? 'password' : 'text'">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-hint>Hint</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Phone number</mat-label>
+                            <input type="tel" pattern="^\d{10}$" matInput placeholder="phone" formControlName="phone" class="form-control" [class]="{ 'is-invalid': submitted && f.phone.invalid}">
+                            <mat-icon matSuffix>phone</mat-icon>
+                            <mat-hint>Include area code</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Address</mat-label>
+                            <textarea matInput class="form-control" placeholder="address" formControlName="address"></textarea>
+
+                            <mat-hint>Hint</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group float-right">
+                <ng-template [ngIf]="showBtnList">
+                    <a mat-raised-button routerLink="/user/lists">Go List</a>
+                </ng-template>
+                <button class="ml-2" [disabled]="getForm.invalid" (click)="onSubmit(getForm)" mat-raised-button color="primary">Create</button>
+                <button class="ml-3" (click)="getForm.reset()" mat-raised-button color="warn">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--  -->
+<button type="button" style="display: none;" class="btn btn-default btn-upload-image" data-toggle="modal" data-target="#modal-lg">
+    Click
+  </button>
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Profile</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4/4" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                        <!-- Image Cropper -->
+                        <!-- Image Preview -->
+                    </div>
+
+                    <div class="col-md-4">
+                        <img style="width: auto;" [src]="croppedImage" crossorigin>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" mat-raised-button color="warn" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" (click)="cropImage()" mat-raised-button color="primary" data-dismiss="modal" class="btn btn-primary">Crop Image</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

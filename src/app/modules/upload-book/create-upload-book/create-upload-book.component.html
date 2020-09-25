@@ -1,0 +1,149 @@
+<div class="row">
+    <div class="col"></div>
+    <div class="col-md-4 py-2 float-right ">
+        <div class="text-right">
+            <a mat-button routerLink="/">Home</a>
+            <span>>></span>
+            <a mat-button routerLink="/upload-book/lists">File Lists</a>
+            <span>>></span>
+            <a mat-button routerLink="/upload-book/upload">Create</a>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <span class="text-center"><h4 class="font-weight-bold">Upload File or Book</h4></span>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="getForm" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-md-3">
+                    <div class="m-auto">
+                        <div class="text-center">
+                            <div class="form-group">
+                                <img [src]="CoverImage" alt="">
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input (change)="getCoverImage($event)" type="file" class="custom-file-input">
+                                    <label class="custom-file-label" for="customFile">Choose Cover</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+            <!-- <input type="hidden" name="coverimage" formControlName #coverimage value="{{CoverImage}}"> -->
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Code Book</mat-label>
+                        <input class="form-control" #codebook matInput formControlName="codebook" placeholder="codebook ">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Title or Book Name</mat-label>
+                        <input class="form-control" #title matInput formControlName="title" placeholder="title or book name">
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Price</mat-label>
+                        <input type="number" class="form-control" #price matInput formControlName="price" placeholder="price ">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Version</mat-label>
+                        <mat-select #version class="form-control border-0" formControlName="version" matInput placeholder="version">
+                            <mat-option value="new">New</mat-option>
+                            <mat-option value="old">Old</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Author</mat-label>
+                            <mat-select #author class="form-control border-0" formControlName="author" matInput placeholder="author">
+                                <div *ngFor="let item of authors">
+                                    <mat-option value="{{item.name}}">{{ item.name }}</mat-option>
+                                </div>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <mat-form-field class="width-form" appearance="legacy">
+                            <mat-label>Category</mat-label>
+                            <mat-select #category class="form-control border-0" multiple formControlName="category" matInput placeholder="category">
+                                <div *ngFor="let item of categories">
+                                    <mat-option value="{{item.catename}}">{{ item.catename }}</mat-option>
+                                </div>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Page Number</mat-label>
+                        <input class="form-control" #page matInput formControlName="page" placeholder="page">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="width-form" appearance="legacy">
+                        <mat-label>@Copyright Year</mat-label>
+                        <input #year formControlName="year" matInput placeholder="year ( ex: 2020) " class="form-control">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group pt-4">
+                        <div class="custom-file">
+                            <input (change)="onUploadFile($event)" #filename formControlName="filename" type="file" class="custom-file-input">
+                            <label class="custom-file-label" for="customFile">Choose file or Book</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="width-form">
+                        <mat-label>Languge</mat-label>
+                        <mat-select #languge class="form-control border-0" formControlName="languge" matInput placeholder="languge">
+                            <mat-option value="khmer">Khmer</mat-option>
+                            <mat-option value="english">English</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <textarea #subtitle formControlName="subtitle" name="subtitle" placeholder="sub title about this book" class="form-control" rows="5"></textarea>
+            </div>
+            <div>
+                <div class="form-group float-right">
+                    <div class="pt-3 ">
+                        <ng-template [ngIf]="showList">
+                            <button routerLink="/upload-book/lists" mat-raised-button>List</button>
+                        </ng-template>
+                        <button class="ml-2" (click)="onSubmit(getForm)" [disabled]="getForm.invalid" mat-raised-button color="primary">Upload</button>
+                        <button class="ml-2" mat-raised-button color="warn" (click)="reset()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col"></div>
+    <div class="col-md-4 py-2 float-right ">
+        <div class="text-right">
+            <a mat-button routerLink="/">Home</a>
+            <span>>></span>
+            <a mat-button routerLink="/author/lists">Author Lists</a>
+            <!-- <span>>></span>
+          <a mat-button routerLink="/author/create">Create</a> -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <button routerLink="/author/create" mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      Create
+    </button>
+    </div>
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- ID Column -->
+        <ng-container style="width: 4px;" matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No </th>
+            <td mat-cell *matCellDef="let i = index;"> {{i+1}} </td>
+        </ng-container>
+
+        <!-- profile Column -->
+        <ng-container matColumnDef="profile">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Profile </th>
+            <td mat-cell *matCellDef="let row" class="py-2">
+                <img style="width: 50px;" class="img-circle elevation-2" src="http://localhost:9000/profile/{{row.profile}}" alt="">
+            </td>
+        </ng-container>
+
+        <!-- username Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Author Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+
+        <!-- Progress Column -->
+        <ng-container matColumnDef="national">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> National </th>
+            <td mat-cell *matCellDef="let row"> {{row.national}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="dob">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </th>
+            <td mat-cell *matCellDef="let row"> {{datePipe.transform(row.dob,"yyyy-MM-dd")}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="aob">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Place of Birth </th>
+            <td mat-cell *matCellDef="let row"> {{row.aob}} </td>
+        </ng-container>
+
+
+        <!-- Color Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+                <mat-menu #menu="matMenu">
+                    <!-- <button mat-menu-item>
+              <button routerLink="/author/edit/{{row._id}}" mat-button class="w-100">Detail</button>
+                    </button> -->
+                    <button mat-menu-item>
+              <button routerLink="/author/edit/{{row._id}}" mat-button class="w-100" color="accent">Edit</button>
+                    </button>
+                    <button mat-menu-item>
+              <button class="w-100" (click)="deleteAuthor(row._id)" color="warn" mat-button>Delete</button>
+                    </button>
+                </mat-menu>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+
+    <mat-paginator style-paginator showFirstLastButtons [length]="7130" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+</div>
