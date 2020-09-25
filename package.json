@@ -1,6 +1,7 @@
 {
   "name": "admin-dashboard-angular",
   "version": "0.0.0",
+  "engines" : { "node" : ">=0.12" },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
